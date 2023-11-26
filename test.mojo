@@ -1,2 +1,2 @@
 fn main():
-    print("AAAAAA NOTHING IS IMPLEMENTED IN MOJO YET HOW AM I GOING TO DO AOC")
+    print("...")
