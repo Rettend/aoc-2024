@@ -114,7 +114,7 @@ function generateCalendar(solvedDay: number, solvedPart: 1 | 2) {
     const stars = day === solvedDay
       ? solvedPart === 1 ? '⭐' : '⭐⭐'
       : ''
-    week.push(`[${day}](./src/day${String(day).padStart(2, '0')}) ${stars}`)
+    week.push(`[${day}](./src/day${String(day).padStart(2, '0')}/index.ts) ${stars}`)
 
     if (week.length === 7) {
       calendar.push(`|${week.join('|')}|`)

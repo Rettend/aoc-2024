@@ -12,5 +12,14 @@ export function part1(input: string) {
 }
 
 export function part2(input: string) {
-  // return input
+  const rows = lines(input).map(line => numbers(line))
+  const left = rows.map(row => row[0])
+  const right = rows.map(row => row[1])
+
+  const similarity = left.reduce((total, leftN) => {
+    const times = right.filter(n => n === leftN).length
+    return total + (leftN * times)
+  }, 0)
+
+  return similarity
 }
