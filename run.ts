@@ -1,6 +1,10 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import process from 'node:process'
+import * as utils from './src/utils'
+
+// eslint-disable-next-line no-restricted-globals
+// const globalThis: any = global
 
 const YEAR = 2024
 
@@ -136,6 +140,8 @@ async function runDay(day: number, useSmol = false) {
 
   if (!existsSync(inputPath))
     throw new Error(`Input file not found: ${inputPath}`)
+
+  Object.assign(globalThis, utils)
 
   const input = readFileSync(inputPath, 'utf-8')
   const solution = await import(`./${dayDir}/index.ts`)

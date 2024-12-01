@@ -1,0 +1,5 @@
+declare function lines(input: string): string[]
+declare function numbers(input: string): number[]
+declare function grid<T>(input: string): T[][]
+declare function digitGrid(input: string): number[][]
+declare function groups(input: string): string[]
