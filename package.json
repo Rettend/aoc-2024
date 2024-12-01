@@ -1,0 +1,22 @@
+{
+  "name": "aoc-2024",
+  "type": "module",
+  "private": true,
+  "packageManager": "bun@1.1.38",
+  "module": "index.ts",
+  "scripts": {
+    "run": "bun run.ts run",
+    "setup": "bun run.ts setup",
+    "submit1": "bun run.ts submit1",
+    "submit2": "bun run.ts submit2",
+    "lint": "eslint --fix ."
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.11.2",
+    "@types/bun": "latest",
+    "eslint": "^9.16.0"
+  }
+}
