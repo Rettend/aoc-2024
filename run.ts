@@ -3,9 +3,6 @@ import { join } from 'node:path'
 import process from 'node:process'
 import * as utils from './src/utils'
 
-// eslint-disable-next-line no-restricted-globals
-// const globalThis: any = global
-
 const YEAR = 2024
 
 interface DayConfig {
@@ -146,7 +143,7 @@ async function runDay(day: number, useSmol = false) {
   const input = readFileSync(inputPath, 'utf-8')
   const solution = await import(`./${dayDir}/index.ts`)
 
-  console.log(`Day ${day}:`)
+  console.log(`Day ${day}`)
   console.log('Part 1:', solution.part1(input))
   console.log('Part 2:', solution.part2(input))
 }
@@ -155,6 +152,7 @@ async function submit(day: number, part: 1 | 2) {
   const dayDir = join('src', `day${String(day).padStart(2, '0')}`)
   const input = readFileSync(join(dayDir, 'input.txt'), 'utf-8')
   const solution = await import(`./${dayDir}/index.ts`)
+  Object.assign(globalThis, utils)
   const answer = part === 1 ? solution.part1(input) : solution.part2(input)
   await submitAnswer({ day, part, answer })
 }
