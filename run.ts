@@ -84,12 +84,26 @@ async function submitAnswer({ day, year = YEAR, part, answer }: {
   return false
 }
 
+interface Progress {
+  [day: number]: 1 | 2
+}
+
 async function updateReadmeCalendar(day: number, part: 1 | 2) {
   const readmePath = './README.md'
-  const readme = readFileSync(readmePath, 'utf-8')
+  const progressPath = './progress.json'
 
+  let progress: Progress = {}
+  if (existsSync(progressPath))
+    progress = JSON.parse(readFileSync(progressPath, 'utf-8'))
+
+  if (!progress[day] || progress[day] < part)
+    progress[day] = part
+
+  writeFileSync(progressPath, JSON.stringify(progress, null, 2))
+
+  const readme = readFileSync(readmePath, 'utf-8')
   const calendarRegex = /<!-- CALENDAR_START -->[\s\S]*<!-- CALENDAR_END -->/
-  const calendar = generateCalendar(day, part)
+  const calendar = generateCalendar(progress)
 
   const newReadme = readme.replace(
     calendarRegex,
@@ -99,7 +113,7 @@ async function updateReadmeCalendar(day: number, part: 1 | 2) {
   writeFileSync(readmePath, newReadme)
 }
 
-function generateCalendar(solvedDay: number, solvedPart: 1 | 2) {
+function generateCalendar(progress: Progress) {
   const days = Array.from({ length: 25 }, (_, i) => i + 1)
   const calendar = ['| M | T | W | T | F | S | S |', '|---|---|---|---|---|---|---|']
 
@@ -109,8 +123,8 @@ function generateCalendar(solvedDay: number, solvedPart: 1 | 2) {
     week.push('')
 
   for (const day of days) {
-    const stars = day === solvedDay
-      ? solvedPart === 1 ? '⭐' : '⭐⭐'
+    const stars = progress[day]
+      ? '⭐'.repeat(progress[day])
       : ''
     week.push(`[${day}](./src/day${String(day).padStart(2, '0')}/index.ts) ${stars}`)
 
