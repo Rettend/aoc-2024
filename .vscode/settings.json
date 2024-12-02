@@ -5,6 +5,13 @@
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
+  "markdownlint.config": {
+    "MD033": {
+      "allowed_elements": [
+        "br"
+      ]
+    }
+  },
   "eslint.rules.customizations": [
     {
       "rule": "style/*",
