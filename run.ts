@@ -33,9 +33,7 @@ async function setupDay({ day, year = YEAR }: DayConfig) {
 
   const solutionPath = join(dayDir, 'index.ts')
   if (!existsSync(solutionPath)) {
-    const template = `import { lines, numbers, grid, digitGrid, groups } from '../../utils'
-
-export function part1(input: string) {
+    const template = `export function part1(input: string) {
   return input
 }
 
