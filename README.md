@@ -7,11 +7,11 @@ Advent of Code 2024 solutions in TypeScript using Bun.
 <!-- CALENDAR_START -->
 | M | T | W | T | F | S | S |
 |---|---|---|---|---|---|---|
-|||||||[1](./src/day01/index.ts)<br>⭐⭐|
-|[2](./src/day02/index.ts)<br>⭐⭐|[3](./src/day03/index.ts)<br>⭐⭐|[4](./src/day04/index.ts)<br>|[5](./src/day05/index.ts)<br>|[6](./src/day06/index.ts)<br>|[7](./src/day07/index.ts)<br>|[8](./src/day08/index.ts)<br>|
-|[9](./src/day09/index.ts)<br>|[10](./src/day10/index.ts)<br>|[11](./src/day11/index.ts)<br>|[12](./src/day12/index.ts)<br>|[13](./src/day13/index.ts)<br>|[14](./src/day14/index.ts)<br>|[15](./src/day15/index.ts)<br>|
-|[16](./src/day16/index.ts)<br>|[17](./src/day17/index.ts)<br>|[18](./src/day18/index.ts)<br>|[19](./src/day19/index.ts)<br>|[20](./src/day20/index.ts)<br>|[21](./src/day21/index.ts)<br>|[22](./src/day22/index.ts)<br>|
-|[23](./src/day23/index.ts)<br>|[24](./src/day24/index.ts)<br>|[25](./src/day25/index.ts)<br>|||||
+|||||||<p align="center">[1](./src/day01/index.ts)<br>⭐⭐</p>|
+|<p align="center">[2](./src/day02/index.ts)<br>⭐⭐</p>|<p align="center">[3](./src/day03/index.ts)<br>⭐⭐</p>|<p align="center">[4](./src/day04/index.ts)<br></p>|<p align="center">[5](./src/day05/index.ts)<br></p>|<p align="center">[6](./src/day06/index.ts)<br></p>|<p align="center">[7](./src/day07/index.ts)<br></p>|<p align="center">[8](./src/day08/index.ts)<br></p>|
+|<p align="center">[9](./src/day09/index.ts)<br></p>|<p align="center">[10](./src/day10/index.ts)<br></p>|<p align="center">[11](./src/day11/index.ts)<br></p>|<p align="center">[12](./src/day12/index.ts)<br></p>|<p align="center">[13](./src/day13/index.ts)<br></p>|<p align="center">[14](./src/day14/index.ts)<br></p>|<p align="center">[15](./src/day15/index.ts)<br></p>|
+|<p align="center">[16](./src/day16/index.ts)<br></p>|<p align="center">[17](./src/day17/index.ts)<br></p>|<p align="center">[18](./src/day18/index.ts)<br></p>|<p align="center">[19](./src/day19/index.ts)<br></p>|<p align="center">[20](./src/day20/index.ts)<br></p>|<p align="center">[21](./src/day21/index.ts)<br></p>|<p align="center">[22](./src/day22/index.ts)<br></p>|
+|<p align="center">[23](./src/day23/index.ts)<br></p>|<p align="center">[24](./src/day24/index.ts)<br></p>|<p align="center">[25](./src/day25/index.ts)<br></p>|||||
 <!-- CALENDAR_END -->
 
 ## Setup

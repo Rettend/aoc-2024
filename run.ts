@@ -126,7 +126,7 @@ function generateCalendar(progress: Progress) {
     const stars = progress[day]
       ? '⭐'.repeat(progress[day])
       : ''
-    week.push(`[${day}](./src/day${String(day).padStart(2, '0')}/index.ts)<br>${stars}`)
+    week.push(`<p align="center">[${day}](./src/day${String(day).padStart(2, '0')}/index.ts)<br>${stars}</p>`)
 
     if (week.length === 7) {
       calendar.push(`|${week.join('|')}|`)
