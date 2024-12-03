@@ -99,7 +99,7 @@ async function updateReadmeCalendar(day: number, part: 1 | 2) {
   if (!progress[day] || progress[day] < part)
     progress[day] = part
 
-  writeFileSync(progressPath, JSON.stringify(progress, null, 2))
+  writeFileSync(progressPath, `${JSON.stringify(progress, null, 2)}\n`)
 
   const readme = readFileSync(readmePath, 'utf-8')
   const calendarRegex = /<!-- CALENDAR_START -->[\s\S]*<!-- CALENDAR_END -->/
