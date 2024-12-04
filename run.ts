@@ -1,9 +1,24 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import process from 'node:process'
+import c from 'picocolors'
 import * as utils from './src/utils'
 
 const YEAR = 2024
+
+export function formatLog(message: string): string {
+  return message
+    .replace(/`([^`]+)`/g, (_, p1) => `${c.cyan(p1)}`)
+    .replace(/~([^~]+)~/g, (_, p1) => `${c.dim(p1)}`)
+    .replace(/\*\*([^*]+)\*\*/g, (_, p1) => `${c.bold(p1)}`)
+    .replace(/\*([^*]+)\*/g, (_, p1) => `${c.italic(p1)}`)
+    .replace(/__([^_]+)__/g, (_, p1) => `${c.underline(p1)}`)
+}
+
+const log = console.log
+console.log = (message: string, ...args: any[]) => {
+  log(formatLog(message), ...args)
+}
 
 interface DayConfig {
   day: number
@@ -34,11 +49,11 @@ async function setupDay({ day, year = YEAR }: DayConfig) {
   const solutionPath = join(dayDir, 'index.ts')
   if (!existsSync(solutionPath)) {
     const template = `export function part1(input: string) {
-  return input
+
 }
 
 export function part2(input: string) {
-  return input
+
 }
 `
     writeFileSync(solutionPath, template)
@@ -99,7 +114,7 @@ async function updateReadmeCalendar(day: number, part: 1 | 2) {
   if (!progress[day] || progress[day] < part)
     progress[day] = part
 
-  writeFileSync(progressPath, `${JSON.stringify(progress, null, 2)}\n`)
+  writeFileSync(progressPath, JSON.stringify(progress, null, 2))
 
   const readme = readFileSync(readmePath, 'utf-8')
   const calendarRegex = /<!-- CALENDAR_START -->[\s\S]*<!-- CALENDAR_END -->/
@@ -126,7 +141,7 @@ function generateCalendar(progress: Progress) {
     const stars = progress[day]
       ? '⭐'.repeat(progress[day])
       : ''
-    week.push(`<p align="center">[${day}](./src/day${String(day).padStart(2, '0')}/index.ts)<br>${stars}</p>`)
+    week.push(`[${day}](./src/day${String(day).padStart(2, '0')}/index.ts)<br>${stars}`)
 
     if (week.length === 7) {
       calendar.push(`|${week.join('|')}|`)
@@ -143,7 +158,28 @@ function generateCalendar(progress: Progress) {
   return calendar.join('\n')
 }
 
-async function runDay(day: number, useSmol = false) {
+function benchmark(fn: () => any) {
+  const MAX_TIME = 3_000
+  const MAX_ITERATIONS = 1_000_000_000
+  const startTime = performance.now()
+  let iterations = 0
+  let result
+
+  while (iterations < MAX_ITERATIONS && (performance.now() - startTime) < MAX_TIME) {
+    result = fn()
+    iterations++
+  }
+
+  const totalTime = performance.now() - startTime
+  const avgTime = totalTime / iterations
+
+  return {
+    result,
+    avgTime,
+  }
+}
+
+async function runDay(day: number, useSmol = false, doBenchmark = false) {
   const dayDir = join('src', `day${String(day).padStart(2, '0')}`)
   const inputPath = join(dayDir, useSmol ? 'smol.txt' : 'input.txt')
 
@@ -156,8 +192,25 @@ async function runDay(day: number, useSmol = false) {
   const solution = await import(`./${dayDir}/index.ts`)
 
   console.log(`Day ${day}`)
-  console.log('Part 1:', solution.part1(input))
-  console.log('Part 2:', solution.part2(input))
+
+  const p1 = solution.part1(input)
+  const p2 = solution.part2(input)
+
+  if (doBenchmark && p1 !== undefined) {
+    const { result, avgTime } = benchmark(() => solution.part1(input))
+    console.log(`Part 1: \`${result}\` ~(${avgTime.toFixed(4)}ms)~`)
+  }
+  else {
+    console.log('Part 1:', p1)
+  }
+
+  if (doBenchmark && p2 !== undefined) {
+    const { result, avgTime } = benchmark(() => solution.part2(input))
+    console.log(`Part 2: \`${result}\` ~(${avgTime.toFixed(4)}ms)~`)
+  }
+  else {
+    console.log('Part 2:', p2)
+  }
 }
 
 async function submit(day: number, part: 1 | 2) {
@@ -174,6 +227,7 @@ if (import.meta.main) {
   const command = args[0]
   const day = Number(args[1])
   const useSmol = args.includes('-s')
+  const doBenchmark = args.includes('-b')
 
   if (Number.isNaN(day) || day < 1 || day > 25)
     throw new Error('Please provide a valid day (1-25)')
@@ -184,7 +238,7 @@ if (import.meta.main) {
       console.log(`Day ${day} setup complete!`)
       break
     case 'run':
-      await runDay(day, useSmol)
+      await runDay(day, useSmol, doBenchmark)
       break
     case 'submit1':
       await submit(day, 1)
@@ -195,7 +249,7 @@ if (import.meta.main) {
     default:
       console.log('Usage:')
       console.log('  bun run.ts setup <day>')
-      console.log('  bun run.ts run <day> [-s]')
+      console.log('  bun run.ts run <day> [-s] [-b]')
       console.log('  bun run.ts submit1 <day>')
       console.log('  bun run.ts submit2 <day>')
   }
