@@ -6,7 +6,10 @@ import * as utils from './src/utils'
 
 const YEAR = 2024
 
-export function formatLog(message: string): string {
+export function formatLog(message: any) {
+  if (typeof message !== 'string')
+    return message
+
   return message
     .replace(/`([^`]+)`/g, (_, p1) => `${c.cyan(p1)}`)
     .replace(/~([^~]+)~/g, (_, p1) => `${c.dim(p1)}`)
@@ -16,8 +19,8 @@ export function formatLog(message: string): string {
 }
 
 const log = console.log
-console.log = (message: string, ...args: any[]) => {
-  log(formatLog(message), ...args)
+console.log = (...args: any[]) => {
+  log(...args.map(formatLog))
 }
 
 interface DayConfig {
@@ -141,7 +144,7 @@ function generateCalendar(progress: Progress) {
     const stars = progress[day]
       ? '⭐'.repeat(progress[day])
       : ''
-    week.push(`[${day}](./src/day${String(day).padStart(2, '0')}/index.ts)<br>${stars}`)
+    week.push(`<p align="center">[${day}](./src/day${String(day).padStart(2, '0')}/index.ts)<br>${stars}</p>`)
 
     if (week.length === 7) {
       calendar.push(`|${week.join('|')}|`)
