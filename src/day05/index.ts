@@ -37,6 +37,54 @@ export function part1(input: string) {
     .reduce((sum, num) => sum + num, 0)
 }
 
-export function part2(input: string) {
+function buildGraph(sequence: number[], rules: Rule[]): Map<number, number[]> {
+  const graph = new Map<number, number[]>()
+  sequence.forEach(n => graph.set(n, []))
 
+  rules.forEach((rule) => {
+    if (sequence.includes(rule.before) && sequence.includes(rule.after)) {
+      const adjacentNodes = graph.get(rule.before) || []
+      adjacentNodes.push(rule.after)
+      graph.set(rule.before, adjacentNodes)
+    }
+  })
+
+  return graph
+}
+
+function topologicalSort(sequence: number[], rules: Rule[]): number[] {
+  const graph = buildGraph(sequence, rules)
+  const visited = new Set<number>()
+  const sorted: number[] = []
+
+  function visit(node: number) {
+    if (visited.has(node))
+      return
+    visited.add(node)
+
+    const neighbors = graph.get(node) || []
+    for (const neighbor of neighbors)
+      visit(neighbor)
+
+    sorted.unshift(node)
+  }
+
+  sequence.forEach((node) => {
+    if (!visited.has(node))
+      visit(node)
+  })
+
+  return sorted
+}
+
+export function part2(input: string) {
+  const [rulesSection, updatesSection] = groups(input)
+  const rules = parseRules(rulesSection)
+  const updates = updatesSection.map(line => line.split(',').map(Number))
+
+  return updates
+    .filter(update => !isValidSequence(update, rules))
+    .map(update => topologicalSort(update, rules))
+    .map(getMiddleNumber)
+    .reduce((sum, num) => sum + num, 0)
 }
